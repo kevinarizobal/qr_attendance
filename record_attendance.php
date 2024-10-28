@@ -7,6 +7,9 @@ $pass = '';
 
 $data = json_decode(file_get_contents("php://input"), true);
 $studentNumber = $data['studentNumber'];
+$room = $data['room']; // Get the room from the request
+$subject = $data['subject']; // Get the subject from the request
+$instructor = $data['instructor']; // Get the instructor's name from the request
 $currentTime = date("Y-m-d H:i:s"); // Current date and time
 $currentDate = date("Y-m-d"); // Current date
 
@@ -31,8 +34,8 @@ try {
         }
     } else {
         // If no timein record exists, insert a new one with timein
-        $stmt = $pdo->prepare("INSERT INTO attendance (std_no, timein, logdate, status) VALUES (?, ?, ?, 'Present')");
-        $stmt->execute([$studentNumber, $currentTime, $currentDate]);
+        $stmt = $pdo->prepare("INSERT INTO attendance (std_no, timein, logdate, status, room, subject, instructor) VALUES (?, ?, ?, 'Present', ?, ?, ?)");
+        $stmt->execute([$studentNumber, $currentTime, $currentDate, $room, $subject, $instructor]);
         echo json_encode(["status" => "success", "message" => "Timein recorded."]);
     }
 
