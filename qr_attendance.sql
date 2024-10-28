@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Oct 28, 2024 at 03:56 AM
+-- Generation Time: Oct 28, 2024 at 07:18 AM
 -- Server version: 10.4.21-MariaDB
 -- PHP Version: 7.3.33
 
@@ -33,15 +33,19 @@ CREATE TABLE `attendance` (
   `timein` time DEFAULT NULL,
   `timeout` datetime DEFAULT NULL,
   `logdate` date DEFAULT NULL,
-  `status` varchar(20) DEFAULT NULL
+  `status` varchar(20) DEFAULT NULL,
+  `room` varchar(255) DEFAULT NULL,
+  `subject` varchar(255) DEFAULT NULL,
+  `instructor` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `attendance`
 --
 
-INSERT INTO `attendance` (`id`, `std_no`, `timein`, `timeout`, `logdate`, `status`) VALUES
-(1, 458655, '03:39:50', '2024-10-28 03:40:06', '2024-10-28', 'Present');
+INSERT INTO `attendance` (`id`, `std_no`, `timein`, `timeout`, `logdate`, `status`, `room`, `subject`, `instructor`) VALUES
+(1, 458655, '07:14:55', '2024-10-28 07:15:09', '2024-10-28', 'Present', 'Room A', 'Mathematics', 'Instructor A'),
+(2, 458655, '07:15:23', '2024-10-28 07:15:29', '2024-10-28', 'Present', 'Room B', 'Science', 'Instructor B');
 
 -- --------------------------------------------------------
 
@@ -57,6 +61,13 @@ CREATE TABLE `user` (
   `status` int(11) DEFAULT 1 COMMENT 'active=1;inactive=0',
   `created` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `user`
+--
+
+INSERT INTO `user` (`id`, `std_no`, `name`, `password`, `status`, `created`) VALUES
+(1, 458655, 'Kevin Arizobal', '202cb962ac59075b964b07152d234b70', 1, '2024-10-28 05:20:30');
 
 -- --------------------------------------------------------
 
@@ -112,13 +123,13 @@ ALTER TABLE `user_profile`
 -- AUTO_INCREMENT for table `attendance`
 --
 ALTER TABLE `attendance`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `user_profile`
