@@ -9,7 +9,8 @@ try {
     $pdo = new PDO("mysql:host=$host;dbname=$db", $user, $pass);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    $stmt = $pdo->query("SELECT `id`, `std_no`, `timein`, `timeout`, `logdate`, `status` FROM `attendance`");
+    // Modify the query to select instructor name
+    $stmt = $pdo->query("SELECT `id`, `std_no`, `timein`, `timeout`, `logdate`, `status`, `room`, `subject`, `instructor` FROM `attendance`");
     $records = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     echo json_encode($records);
