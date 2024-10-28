@@ -6,45 +6,66 @@
     <title>QR Code Scanner</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css">
     <style>
-        .viewport {
+        body {
+            background-color: #f8f9fa;
+        }
+        .navbar {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background-color: #0d6efd;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border-radius: 0 0 10px 10px;
+        }
+        .content {
+            padding: 30px;
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+        }
+        #interactive {
             width: 100%;
-            height: auto;
+            max-height: 400px;
             border: 2px solid #0d6efd;
             border-radius: 0.5rem;
             margin-bottom: 15px;
         }
-        #error-message {
-            color: red;
-            font-weight: bold;
+        .form-select {
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: all 0.2s ease;
         }
-        table {
+        .form-select:focus {
+            border-color: #0d6efd;
+            box-shadow: 0 0 8px rgba(13, 110, 253, 0.25);
+        }
+        .alert {
             border-radius: 0.5rem;
-            overflow: hidden;
         }
-        th, td {
-            vertical-align: middle;
-        }
-        tbody tr:hover {
+        .table-hover tbody tr:hover {
             background-color: #f1f1f1;
         }
-        body {
-            background-color: #f7f7f7;
+        .table-striped tbody tr:nth-of-type(odd) {
+            background-color: #f9f9f9;
         }
-        .navbar {
-            margin-bottom: 20px;
+        #error-message {
+            font-weight: bold;
+            color: #dc3545;
         }
-        .content {
-            padding: 20px;
-            background-color: white;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        .btn-outline-primary {
+            transition: all 0.3s ease;
+        }
+        .btn-outline-primary:hover {
+            background-color: #0d6efd;
+            color: #fff;
         }
     </style>
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+
+<nav class="navbar navbar-expand-lg navbar-dark">
     <div class="container-fluid">
-        <a class="navbar-brand" href="#">Dashboard</a>
+        <a class="navbar-brand" href="dashboard.php">Dashboard</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -57,6 +78,7 @@
                     <ul class="dropdown-menu" aria-labelledby="qrCodeDropdown">
                         <li><a class="dropdown-item" href="qr_code.php">Generate QR Code</a></li>
                         <li><a class="dropdown-item" href="#qrCodeHistory">QR Code History</a></li>
+                        <li><a class="dropdown-item" href="qr_scan.php">QR Code Scan</a></li>
                     </ul>
                 </li>
                 <li class="nav-item">
@@ -71,64 +93,67 @@
 </nav>
 
 <div class="container mt-5">
-    <video id="interactive" class="viewport"></video>
-    
-    <!-- Dropdowns for Room, Subject, and Instructor -->
-    <div class="mb-3">
-        <label for="roomSelect" class="form-label">Select Room</label>
-        <select id="roomSelect" class="form-select">
-            <option value="">Choose a room</option>
-            <option value="Room A">Room A</option>
-            <option value="Room B">Room B</option>
-            <option value="Room C">Room C</option>
-        </select>
-    </div>
+    <div class="content">
+        <video id="interactive" class="mb-3"></video>
 
-    <div class="mb-3">
-        <label for="subjectSelect" class="form-label">Select Subject</label>
-        <select id="subjectSelect" class="form-select">
-            <option value="">Choose a subject</option>
-            <option value="Mathematics">Mathematics</option>
-            <option value="Science">Science</option>
-            <option value="History">History</option>
-        </select>
-    </div>
+        <!-- Dropdowns for Room, Subject, and Instructor -->
+        <div class="mb-3">
+            <label for="roomSelect" class="form-label">Select Room</label>
+            <select id="roomSelect" class="form-select">
+                <option value="">Choose a room</option>
+                <option value="Room A">Room A</option>
+                <option value="Room B">Room B</option>
+                <option value="Room C">Room C</option>
+            </select>
+        </div>
 
-    <div class="mb-3">
-        <label for="instructorSelect" class="form-label">Select Instructor</label>
-        <select id="instructorSelect" class="form-select">
-            <option value="">Choose an instructor</option>
-            <option value="Instructor A">Instructor A</option>
-            <option value="Instructor B">Instructor B</option>
-            <option value="Instructor C">Instructor C</option>
-        </select>
-    </div>
+        <div class="mb-3">
+            <label for="subjectSelect" class="form-label">Select Subject</label>
+            <select id="subjectSelect" class="form-select">
+                <option value="">Choose a subject</option>
+                <option value="Mathematics">Mathematics</option>
+                <option value="Science">Science</option>
+                <option value="History">History</option>
+            </select>
+        </div>
 
-    <div id="result-container" style="display:none;">
-        <h4>Scanned Result:</h4>
-        <p id="result" class="lead"></p>
-    </div>
-    <p id="error-message" class="text-danger"></p>
+        <div class="mb-3">
+            <label for="instructorSelect" class="form-label">Select Instructor</label>
+            <select id="instructorSelect" class="form-select">
+                <option value="">Choose an instructor</option>
+                <option value="Instructor A">Instructor A</option>
+                <option value="Instructor B">Instructor B</option>
+                <option value="Instructor C">Instructor C</option>
+            </select>
+        </div>
 
-    <h3 class="mt-4">Attendance Records</h3>
-    <table class="table table-striped table-hover table-bordered mt-3">
-        <thead class="table-light text-center">
-            <tr>
-                <th>ID</th>
-                <th>Student Number</th>
-                <th>Time In</th>
-                <th>Time Out</th>
-                <th>Date</th>
-                <th>Status</th>
-                <th>Room</th>
-                <th>Subject</th>
-                <th>Instructor</th>
-            </tr>
-        </thead>
-        <tbody id="attendance-table-body" class="text-center">
-            <!-- Attendance records will be dynamically inserted here -->
-        </tbody>
-    </table>
+        <div id="result-container" class="alert alert-info" style="display:none;">
+            <h4>Scanned Result:</h4>
+            <p id="result" class="lead"></p>
+        </div>
+
+        <p id="error-message" class="text-danger"></p>
+
+        <h3 class="mt-4">Attendance Records</h3>
+        <table class="table table-striped table-hover table-bordered mt-3">
+            <thead class="table-light text-center">
+                <tr>
+                    <th>ID</th>
+                    <th>Student Number</th>
+                    <th>Time In</th>
+                    <th>Time Out</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                    <th>Room</th>
+                    <th>Subject</th>
+                    <th>Instructor</th>
+                </tr>
+            </thead>
+            <tbody id="attendance-table-body" class="text-center">
+                <!-- Attendance records will be dynamically inserted here -->
+            </tbody>
+        </table>
+    </div>
 </div>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -210,13 +235,9 @@
                 subject: selectedSubject,
                 instructor: instructorName
             }),
-            dataType: 'json',
             success: function(response) {
-                if (response.status === 'success') {
-                    fetchAttendanceRecords();
-                } else {
-                    $('#error-message').text(response.error || 'Attendance recording failed.');
-                }
+                $('#error-message').text('');
+                fetchAttendanceRecords();
             },
             error: function() {
                 $('#error-message').text('Failed to record attendance.');
