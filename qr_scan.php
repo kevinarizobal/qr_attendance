@@ -5,17 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>QR Code Scanner</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-
         .viewport {
             width: 100%;
             height: auto;
             border: 2px solid #0d6efd;
             border-radius: 0.5rem;
             margin-bottom: 15px;
-            margin: 0 auto; /* Center the element */
-            margin-bottom: 15px; /* Maintain bottom margin */
         }
         #error-message {
             color: red;
@@ -43,9 +39,6 @@
             border-radius: 10px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         }
-        .menu-item {
-            margin-top: 20px;
-        }
     </style>
 </head>
 <body>
@@ -57,7 +50,6 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
-                <!-- QR Code Setting Dropdown -->
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="qrCodeDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         QR Code Setting
@@ -80,6 +72,38 @@
 
 <div class="container mt-5">
     <video id="interactive" class="viewport"></video>
+    
+    <!-- Dropdowns for Room, Subject, and Instructor -->
+    <div class="mb-3">
+        <label for="roomSelect" class="form-label">Select Room</label>
+        <select id="roomSelect" class="form-select">
+            <option value="">Choose a room</option>
+            <option value="Room A">Room A</option>
+            <option value="Room B">Room B</option>
+            <option value="Room C">Room C</option>
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label for="subjectSelect" class="form-label">Select Subject</label>
+        <select id="subjectSelect" class="form-select">
+            <option value="">Choose a subject</option>
+            <option value="Mathematics">Mathematics</option>
+            <option value="Science">Science</option>
+            <option value="History">History</option>
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label for="instructorSelect" class="form-label">Select Instructor</label>
+        <select id="instructorSelect" class="form-select">
+            <option value="">Choose an instructor</option>
+            <option value="Instructor A">Instructor A</option>
+            <option value="Instructor B">Instructor B</option>
+            <option value="Instructor C">Instructor C</option>
+        </select>
+    </div>
+
     <div id="result-container" style="display:none;">
         <h4>Scanned Result:</h4>
         <p id="result" class="lead"></p>
@@ -96,6 +120,9 @@
                 <th>Time Out</th>
                 <th>Date</th>
                 <th>Status</th>
+                <th>Room</th>
+                <th>Subject</th>
+                <th>Instructor</th>
             </tr>
         </thead>
         <tbody id="attendance-table-body" class="text-center">
@@ -106,7 +133,6 @@
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script>
-<!-- Bootstrap 5 JS (Optional, but for full functionality) -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 <script>
     const scanner = new Instascan.Scanner({ video: document.getElementById('interactive') });
@@ -127,7 +153,6 @@
         document.getElementById('error-message').innerText = 'Camera access error: ' + err;
     });
 
-    // Fetch attendance records on page load
     $(document).ready(function() {
         fetchAttendanceRecords();
     });
@@ -151,6 +176,9 @@
                                 <td>${record.timeout ? record.timeout : '---'}</td>
                                 <td>${record.logdate}</td>
                                 <td>${record.status}</td>
+                                <td>${record.room}</td>
+                                <td>${record.subject}</td>
+                                <td>${record.instructor}</td>
                             </tr>
                         `);
                     });
@@ -163,11 +191,25 @@
     }
 
     function recordAttendance(studentNumber) {
+        const selectedRoom = $('#roomSelect').val();
+        const selectedSubject = $('#subjectSelect').val();
+        const instructorName = $('#instructorSelect').val();
+
+        if (!selectedRoom || !selectedSubject || !instructorName) {
+            $('#error-message').text('Please select room, subject, and instructor before scanning.');
+            return;
+        }
+
         $.ajax({
             url: 'record_attendance.php',
             method: 'POST',
             contentType: 'application/json',
-            data: JSON.stringify({ studentNumber: studentNumber }),
+            data: JSON.stringify({
+                studentNumber: studentNumber,
+                room: selectedRoom,
+                subject: selectedSubject,
+                instructor: instructorName
+            }),
             dataType: 'json',
             success: function(response) {
                 if (response.status === 'success') {
