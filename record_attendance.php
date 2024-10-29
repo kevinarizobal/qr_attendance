@@ -17,6 +17,16 @@ try {
     $pdo = new PDO("mysql:host=$host;dbname=$db", $user, $pass);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
+    // Check if the student exists in the user table
+    $stmt = $pdo->prepare("SELECT COUNT(*) FROM user WHERE std_no = ?");
+    $stmt->execute([$studentNumber]);
+    $isRegistered = $stmt->fetchColumn();
+
+    if (!$isRegistered) {
+        echo json_encode(["status" => "error", "message" => "Student is not registered."]);
+        exit; // Stop execution if student is not registered
+    }
+
     // Check if the student already has a timein record for today with room and subject
     $stmt = $pdo->prepare("SELECT id, timein, timeout FROM attendance WHERE std_no = ? AND logdate = ? AND room = ? AND subject = ?");
     $stmt->execute([$studentNumber, $currentDate, $room, $subject]);
