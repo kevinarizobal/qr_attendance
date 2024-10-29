@@ -39,9 +39,10 @@ if (isset($_POST['register'])) {
 if (isset($_POST['login'])) {
     $std_no = $_POST['std_no'];
     $password = md5($_POST['password']);  // Hash the password
+    $user_type = $_POST['user_type'];
 
     // Check if the student ID exists and password matches
-    $login_sql = "SELECT * FROM `user` WHERE `std_no` = '$std_no' AND `password` = '$password' AND `status` = 1";
+    $login_sql = "SELECT * FROM `user` WHERE `std_no` = '$std_no' AND `password` = '$password' AND `status` = 1 AND `user_type`= '$user_type'";
     $result = $conn->query($login_sql);
 
     if ($result->num_rows > 0) {
@@ -50,16 +51,25 @@ if (isset($_POST['login'])) {
         $_SESSION['user_id'] = $user['id'];
         $_SESSION['std_no'] = $user['std_no'];
         $_SESSION['full_name'] = $user['name'];
+        $_SESSION['user_type'] = $user['user_type'];
 
-        // Redirect to a protected page or dashboard
-        echo "<script>alert('Login successful! Redirecting to dashboard...');</script>";
-        echo "<script>window.location.href='dashboard.php';</script>";
+        // Redirect based on user type
+        if ($user['user_type'] == 1) {
+            // Redirect Student to dashboard
+            echo "<script>alert('Login successful! Redirecting to student dashboard...');</script>";
+            echo "<script>window.location.href='dashboard.php';</script>";
+        } else if ($user['user_type'] == 2) {
+            // Redirect Teacher to teacher dashboard
+            echo "<script>alert('Login successful! Redirecting to teacher dashboard...');</script>";
+            echo "<script>window.location.href='dashboard_teacher.php';</script>";
+        }
     } else {
         // If login fails, show an error message
         echo "<script>alert('Invalid student ID or password.');</script>";
     }
 }
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -137,6 +147,13 @@ if (isset($_POST['login'])) {
             <div class="mb-3">
                 <label for="loginPassword" class="form-label">Password</label>
                 <input type="password" name="password" class="form-control" id="loginPassword" placeholder="Enter your password" required>
+            </div>
+            <div class="mb-3">
+                <label for="loginUser" class="form-label">User Type</label>
+                <select name="user_type" class="form-select">
+                    <option value="1">Student</option>
+                    <option value="2">Teacher</option>
+                </select>
             </div>
             <button type="submit" name="login" class="btn btn-primary btn-custom">Login</button>
             <div class="form-footer">
