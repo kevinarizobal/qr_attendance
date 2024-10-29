@@ -1,69 +1,70 @@
-<?php
-include('connect.php');
-session_start();
-
-// Check if the user is logged in
-if (!isset($_SESSION['std_no'])) {
-    // If not, redirect to login page
-    header("Location: index.php");
-    exit();
-}
-
-$std_no =  $_SESSION['std_no'];
-
-?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>QR Code Generator</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      text-align: center;
-      padding: 50px;
-    }
-    h1 {
-      color: #333;
-    }
-    .container {
-      margin-top: 20px;
-    }
-    #qrcode {
-      margin-top: 20px;
-    }
-    input[type="text"], button {
-      padding: 10px;
-      margin: 10px;
-    }
-    button {
-      background-color: #28a745;
-      color: white;
-      border: none;
-      cursor: pointer;
-    }
-    button:hover {
-      background-color: #218838;
-    }
-    #download-btn {
-      margin-top: 20px;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Code Generator</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .navbar {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background-color: #0d6efd;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border-radius: 0 0 10px 10px;
+        }
+        .content {
+            padding: 30px;
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+        }
+        #qrcode-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        #qrcode canvas {
+            margin-bottom: 10px;
+        }
+        #download-btn {
+            display: none;
+        }
+    </style>
 </head>
 <body>
+<?php include ("navbar.php");?>
 
-  <h1>Test Student QR Code Generator</h1>
+<div class="container mt-5">
+    <div class="content">
+      <div class="row">
+        <div class="col-10">
+          <input type="text" id="text" value="<?php echo $std_no;?>" placeholder="Enter text for QR Code" class="form-control" readonly/>
+        </div>
+        <div class="col-2">
+          <button class="btn btn-primary" onclick="generateQRCode()">Generate QR Code</button>
+        </div>
+      </div>
 
-  <div class="container">
-    <input type="text" id="text" value="<?php echo $std_no;?>" placeholder="Enter text for QR Code" readonly/>
-    <button onclick="generateQRCode()">Generate QR Code</button>
-    <div id="qrcode"></div>
-    <a id="download-btn" href="#" download="qrcode.png">Download QR Code</a>
-  </div>
-
-  <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
-  <script>
+      <div class="container mt-4">
+        <div id="qrcode-container">
+          <div id="qrcode"></div>
+          <a class="btn btn-success" id="download-btn" href="#" download="qrcode.png">Download QR Code</a>
+        </div>
+      </div>
+    </div>
+</div>
+</body>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+<script>
     function generateQRCode() {
       const text = document.getElementById('text').value;
       if (text.trim() === '') {
@@ -91,7 +92,5 @@ $std_no =  $_SESSION['std_no'];
         downloadBtn.style.display = 'block';
       });
     }
-  </script>
-
-</body>
+</script>
 </html>
