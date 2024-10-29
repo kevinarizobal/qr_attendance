@@ -179,8 +179,13 @@
                 instructor: instructorName
             }),
             success: function(response) {
-                $('#error-message').text('');
-                fetchAttendanceRecords();
+                const res = JSON.parse(response);
+                if (res.status === "error") {
+                    $('#error-message').text(res.message);
+                } else {
+                    $('#error-message').text('');
+                    fetchAttendanceRecords();
+                }
             },
             error: function() {
                 $('#error-message').text('Failed to record attendance.');
