@@ -25,76 +25,20 @@
             margin-top: 20px;
         }
         #interactive {
-            width: 100%;
+            width: auto;
             max-height: 400px;
             border: 2px solid #0d6efd;
             border-radius: 0.5rem;
             margin-bottom: 15px;
         }
-        .form-select {
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            transition: all 0.2s ease;
-        }
-        .form-select:focus {
-            border-color: #0d6efd;
-            box-shadow: 0 0 8px rgba(13, 110, 253, 0.25);
-        }
-        .alert {
-            border-radius: 0.5rem;
-        }
-        .table-hover tbody tr:hover {
-            background-color: #f1f1f1;
-        }
-        .table-striped tbody tr:nth-of-type(odd) {
-            background-color: #f9f9f9;
-        }
-        #error-message {
-            font-weight: bold;
-            color: #dc3545;
-        }
-        .btn-outline-primary {
-            transition: all 0.3s ease;
-        }
-        .btn-outline-primary:hover {
-            background-color: #0d6efd;
-            color: #fff;
-        }
     </style>
 </head>
 <body>
-
-<nav class="navbar navbar-expand-lg navbar-dark">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="dashboard.php">Dashboard</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto">
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="qrCodeDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        QR Code Setting
-                    </a>
-                    <ul class="dropdown-menu" aria-labelledby="qrCodeDropdown">
-                        <li><a class="dropdown-item" href="qr_code.php">Generate QR Code</a></li>
-                        <li><a class="dropdown-item" href="#qrCodeHistory">QR Code History</a></li>
-                        <li><a class="dropdown-item" href="qr_scan.php">QR Code Scan</a></li>
-                    </ul>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#accountManagement">Account Management</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="logout.php">Logout</a>
-                </li>
-            </ul>
-        </div>
-    </div>
-</nav>
+<?php include ("navbar.php");?>
 
 <div class="container mt-5">
     <div class="content">
-        <video id="interactive" class="mb-3"></video>
+        <center><video id="interactive" class="mb-3"></video></center>
 
         <!-- Dropdowns for Room, Subject, and Instructor -->
         <div class="mb-3">
@@ -158,7 +102,6 @@
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 <script>
     const scanner = new Instascan.Scanner({ video: document.getElementById('interactive') });
 
