@@ -9,6 +9,7 @@ if (!isset($_SESSION['std_no'])) {
     exit();
 }
 $std_no =  $_SESSION['std_no'];
+$name = $_SESSION['full_name'];
 ?>
 
 
@@ -43,30 +44,43 @@ $std_no =  $_SESSION['std_no'];
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
         <div class="container-fluid">
-            <a class="navbar-brand" href="dashboard.php">Dashboard</a>
+            <a class="navbar-brand" href="dashboard.php">STUDENT QR ATTENDANCE SYSTEM</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <!-- QR Code Setting Dropdown -->
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="dashboard.php">Home</a>
+                    </li>
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="qrCodeDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle text-white shadow-none" href="#" id="qrCodeDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             QR Code Setting
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="qrCodeDropdown">
                             <li><a class="dropdown-item" href="qr_code.php">Generate QR Code</a></li>
-                            <li><a class="dropdown-item" href="#qrCodeHistory">QR Code History</a></li>
-                            <li><a class="dropdown-item" href="qr_scan.php">QR Code Scan</a></li>
+                            <li><a class="dropdown-item" href="#qrCodeHistory">Attendance History</a></li>
                         </ul>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#accountManagement">Account Management</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="logout.php">Logout</a>
-                    </li>
                 </ul>
+                <div class="d-flex ms-auto">
+                    <?php
+                        if(isset($_SESSION['login']) && $_SESSION['login']==true && $_SESSION['user_type'] == '1')
+            
+                        {
+                        echo<<<data
+                            <button type="button" class="btn btn-outline-dark text-white shadow-none dropdown-toggle" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false" aria-label="Toggle navigation">
+                                $_SESSION[full_name]
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-lg-end">
+                                <li><a class="dropdown-item" href="account_setting.php">Profile</a></li>
+                                <li><a class="dropdown-item" href="logout.php">Logout</a></li>
+                            </ul>
+                            </div>
+                        data;
+                        }
+                    ?>
+                </div>
             </div>
         </div>
     </nav>
