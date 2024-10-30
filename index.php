@@ -52,6 +52,7 @@ if (isset($_POST['login'])) {
         $_SESSION['std_no'] = $user['std_no'];
         $_SESSION['full_name'] = $user['name'];
         $_SESSION['user_type'] = $user['user_type'];
+        $_SESSION['login'] = true;
 
         // Redirect based on user type
         if ($user['user_type'] == 1) {
