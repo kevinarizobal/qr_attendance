@@ -3,12 +3,12 @@ include ("connect.php");
 session_start();
 
 // Check if the user is logged in
-if (!isset($_SESSION['std_no'])) {
+if (!isset($_SESSION['username'])) {
     // If not, redirect to login page
     header("Location: index.php");
     exit();
 }
-$std_no =  $_SESSION['std_no'];
+$std_no =  $_SESSION['username'];
 $name = $_SESSION['full_name'];
 ?>
 
@@ -44,7 +44,7 @@ $name = $_SESSION['full_name'];
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
         <div class="container-fluid">
-            <a class="navbar-brand" href="dashboard.php">STUDENT QR ATTENDANCE SYSTEM</a>
+            <a class="navbar-brand" href="dashboard.php">QR ATTENDANCE MANAGEMENT SYSTEM</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -55,17 +55,18 @@ $name = $_SESSION['full_name'];
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle text-white shadow-none" href="#" id="qrCodeDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            QR Code Setting
+                            Management Setting
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="qrCodeDropdown">
-                            <li><a class="dropdown-item" href="qr_code.php">Generate QR Code</a></li>
-                            <li><a class="dropdown-item" href="#qrCodeHistory">Attendance History</a></li>
+                            <li><a class="dropdown-item" href="#">Instructor Account</a></li>
+                            <li><a class="dropdown-item" href="#">Subject Management</a></li>
+                            <li><a class="dropdown-item" href="#">Room Management</a></li>
                         </ul>
                     </li>
                 </ul>
                 <div class="d-flex ms-auto">
                     <?php
-                        if(isset($_SESSION['login']) && $_SESSION['login']==true && $_SESSION['user_type'] == '1')
+                        if(isset($_SESSION['login']) && $_SESSION['login']==true)
             
                         {
                         echo<<<data
@@ -73,7 +74,6 @@ $name = $_SESSION['full_name'];
                                 $_SESSION[full_name]
                             </button>
                             <ul class="dropdown-menu dropdown-menu-lg-end">
-                                <li><a class="dropdown-item" href="account_setting.php">Profile</a></li>
                                 <li><a class="dropdown-item" href="logout.php">Logout</a></li>
                             </ul>
                             </div>
