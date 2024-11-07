@@ -63,8 +63,8 @@ $name = $_SESSION['full_name'];
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="qrCodeDropdown">
                             <li><a class="dropdown-item" href="instructor_account.php">Instructor Account</a></li>
-                            <li><a class="dropdown-item" href="#">Subject Management</a></li>
-                            <li><a class="dropdown-item" href="#">Room Management</a></li>
+                            <li><a class="dropdown-item" href="subject.php">Subject Management</a></li>
+                            <li><a class="dropdown-item" href="room.php">Room Management</a></li>
                         </ul>
                     </li>
                 </ul>
