@@ -17,7 +17,7 @@ if (isset($_POST['register'])) {
         echo "<script>alert('Student ID already exists! Please use a different ID.');</script>";
     } else {
         // Insert the new user
-        $sql = "INSERT INTO `user`(`std_no`, `name`, `password`) VALUES ('$std_no','$full_name','$password')";
+        $sql = "INSERT INTO `user`(`std_no`, `name`, `password`, `status`, `user_type`) VALUES ('$std_no','$full_name','$password',1,1)";
 
         if ($conn->query($sql) === TRUE) {
             // After inserting into `user`, insert the `std_no` into `user_profile` table
@@ -142,7 +142,7 @@ if (isset($_POST['login'])) {
         <h2 class="form-title">Login</h2>
         <form method="POST" autocomplete="off">
             <div class="mb-3">
-                <label for="loginEmail" class="form-label">Student ID No.</label>
+                <label for="loginEmail" class="form-label">ID No.</label>
                 <input type="number" name="std_no" class="form-control" id="loginEmail" placeholder="Enter your ID No." required>
             </div>
             <div class="mb-3">
