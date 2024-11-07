@@ -59,7 +59,7 @@ $name = $_SESSION['full_name'];
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="qrCodeDropdown">
                             <li><a class="dropdown-item" href="qr_code.php">Generate QR Code</a></li>
-                            <li><a class="dropdown-item" href="#qrCodeHistory">Attendance History</a></li>
+                            <li><a class="dropdown-item" href="attendance_filter.php">Attendance History</a></li>
                         </ul>
                     </li>
                 </ul>
