@@ -8,15 +8,15 @@ if (isset($_POST['login'])) {
     $password = md5($_POST['password']);  // Hash the password
 
     // Check if the student ID exists and password matches
-    $login_sql = "SELECT * FROM `admin` WHERE `uname` = '$uname' AND `password` = '$password' AND `status` = 1";
+    $login_sql = "SELECT * FROM `admin` WHERE `username` = '$uname' AND `password` = '$password' AND `status` = 1";
     $result = $conn->query($login_sql);
 
     if ($result->num_rows > 0) {
         // If login is successful, fetch user data and store in session
         $user = $result->fetch_assoc();
         $_SESSION['user_id'] = $user['id'];
-        $_SESSION['username'] = $user['uname'];
-        $_SESSION['full_name'] = $user['name'];
+        $_SESSION['username'] = $user['username'];
+        $_SESSION['full_name'] = $user['fullname'];
         $_SESSION['login'] = true;
   
         // Redirect Student to dashboard
