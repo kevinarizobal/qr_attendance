@@ -3,12 +3,12 @@ include ("connect.php");
 session_start();
 
 // Check if the user is logged in
-if (!isset($_SESSION['username'])) {
+if (!isset($_SESSION['user_id'])) {
     // If not, redirect to login page
     header("Location: index.php");
     exit();
 }
-$std_no =  $_SESSION['username'];
+$std_no =  $_SESSION['user_id'];
 $name = $_SESSION['full_name'];
 ?>
 
@@ -22,6 +22,10 @@ $name = $_SESSION['full_name'];
     <title>Dashboard</title>
     <!-- Bootstrap 5 CDN -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css">
+    <!-- SweetAlert 2 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
     <style>
         body {
             background-color: #f7f7f7;
@@ -44,7 +48,7 @@ $name = $_SESSION['full_name'];
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
         <div class="container-fluid">
-            <a class="navbar-brand" href="dashboard.php">QR ATTENDANCE MANAGEMENT SYSTEM</a>
+            <a class="navbar-brand" href="dashboard.php">QR ATTENDANCE SYSTEM</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -58,7 +62,7 @@ $name = $_SESSION['full_name'];
                             Management Setting
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="qrCodeDropdown">
-                            <li><a class="dropdown-item" href="#">Instructor Account</a></li>
+                            <li><a class="dropdown-item" href="instructor_account.php">Instructor Account</a></li>
                             <li><a class="dropdown-item" href="#">Subject Management</a></li>
                             <li><a class="dropdown-item" href="#">Room Management</a></li>
                         </ul>
@@ -91,5 +95,10 @@ $name = $_SESSION['full_name'];
 
     <!-- Bootstrap 5 JS (Optional, but for full functionality) -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- JavaScript Libraries -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 </body>
 </html>
