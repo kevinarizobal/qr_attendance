@@ -11,7 +11,7 @@ include 'connect.php';
 <body>
 <?php include 'navbar.php'; ?>
 <div class="container mt-5">
-    <h2>Subject Management</h2>
+    <h2 align="center">Subject Management</h2>
     <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#createModal">Add Subject</button>
     <table id="subjectTable" class="table table-striped">
         <thead>
