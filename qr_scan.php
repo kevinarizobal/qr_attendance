@@ -34,42 +34,14 @@
     </style>
 </head>
 <body>
-<?php include ("navbar.php");?>
+<?php include ("navbar_teacher.php");?>
 
 <div class="container mt-5">
     <div class="content">
         <center><video id="interactive" class="mb-3"></video></center>
 
         <!-- Dropdowns for Room, Subject, and Instructor -->
-        <div class="mb-3">
-            <label for="roomSelect" class="form-label">Select Room</label>
-            <select id="roomSelect" class="form-select">
-                <option value="">Choose a room</option>
-                <option value="Room A">Room A</option>
-                <option value="Room B">Room B</option>
-                <option value="Room C">Room C</option>
-            </select>
-        </div>
-
-        <div class="mb-3">
-            <label for="subjectSelect" class="form-label">Select Subject</label>
-            <select id="subjectSelect" class="form-select">
-                <option value="">Choose a subject</option>
-                <option value="Mathematics">Mathematics</option>
-                <option value="Science">Science</option>
-                <option value="History">History</option>
-            </select>
-        </div>
-
-        <div class="mb-3">
-            <label for="instructorSelect" class="form-label">Select Instructor</label>
-            <select id="instructorSelect" class="form-select">
-                <option value="">Choose an instructor</option>
-                <option value="Instructor A">Instructor A</option>
-                <option value="Instructor B">Instructor B</option>
-                <option value="Instructor C">Instructor C</option>
-            </select>
-        </div>
+        <?php include 'fetch_options.php'; ?>
 
         <div id="result-container" class="alert alert-info" style="display:none;">
             <h4>Scanned Result:</h4>
