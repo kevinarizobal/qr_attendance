@@ -17,19 +17,30 @@ $output = fopen("php://output", "w");
 // Define the CSV header without 'Status'
 fputcsv($output, ['ID', 'Student ID', 'Time In', 'Time Out', 'Log Date', 'Room', 'Subject', 'Instructor']);
 
-// SQL query excluding 'status' column and applying filters
+// Prepare SQL query with placeholders
 $sql = "SELECT `id`, `std_no`, `timein`, `timeout`, `logdate`, `room`, `subject`, `instructor` 
         FROM `attendance` 
-        WHERE `std_no` = '$std_no'";
+        WHERE `std_no` = ?";
 
-// Check if date filters are set and apply them to the query
+// Add date filtering if both dates are provided
+if (!empty($_GET['start_date']) && !empty($_GET['end_date'])) {
+    $sql .= " AND `logdate` BETWEEN ? AND ?";
+}
+
+$stmt = $conn->prepare($sql);
+
+// Bind parameters based on whether dates are provided
 if (!empty($_GET['start_date']) && !empty($_GET['end_date'])) {
     $start_date = $_GET['start_date'];
     $end_date = $_GET['end_date'];
-    $sql .= " AND `logdate` BETWEEN '$start_date' AND '$end_date'";
+    $stmt->bind_param("sss", $std_no, $start_date, $end_date);
+} else {
+    $stmt->bind_param("s", $std_no);
 }
 
-$result = $conn->query($sql);
+// Execute the statement
+$stmt->execute();
+$result = $stmt->get_result();
 
 // Fetch rows and write to CSV excluding 'status'
 while ($row = $result->fetch_assoc()) {
@@ -46,5 +57,7 @@ while ($row = $result->fetch_assoc()) {
 }
 
 fclose($output);
+$stmt->close();
+$conn->close();
 exit();
 ?>
