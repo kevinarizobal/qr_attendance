@@ -8,6 +8,7 @@ if (!isset($_SESSION['std_no'])) {
 }
 
 $std_no = $_SESSION['std_no'];
+$name = $_SESSION['full_name'];
 
 header('Content-Type: text/csv');
 header('Content-Disposition: attachment; filename="attendance_records.csv"');
@@ -17,10 +18,10 @@ $output = fopen("php://output", "w");
 // Define the CSV header without 'Status'
 fputcsv($output, ['ID', 'Student ID', 'Time In', 'Time Out', 'Log Date', 'Room', 'Subject', 'Instructor']);
 
-// Prepare SQL query with placeholders
+// Prepare SQL query to filter by instructor's name
 $sql = "SELECT `id`, `std_no`, `timein`, `timeout`, `logdate`, `room`, `subject`, `instructor` 
         FROM `attendance` 
-        WHERE `std_no` = ?";
+        WHERE `instructor` = ?";
 
 // Add date filtering if both dates are provided
 if (!empty($_GET['start_date']) && !empty($_GET['end_date'])) {
@@ -33,16 +34,16 @@ $stmt = $conn->prepare($sql);
 if (!empty($_GET['start_date']) && !empty($_GET['end_date'])) {
     $start_date = $_GET['start_date'];
     $end_date = $_GET['end_date'];
-    $stmt->bind_param("sss", $std_no, $start_date, $end_date);
+    $stmt->bind_param("sss", $name, $start_date, $end_date);
 } else {
-    $stmt->bind_param("s", $std_no);
+    $stmt->bind_param("s", $name);
 }
 
 // Execute the statement
 $stmt->execute();
 $result = $stmt->get_result();
 
-// Fetch rows and write to CSV excluding 'status'
+// Fetch rows and write to CSV
 while ($row = $result->fetch_assoc()) {
     fputcsv($output, [
         $row['id'], 
