@@ -1,4 +1,6 @@
-<?php include 'connect.php'; ?>
+<?php 
+include 'connect.php';
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -26,7 +28,6 @@
             </div>
             <div class="col-md-3 align-self-end">
                 <button type="submit" class="btn btn-primary">Filter</button>
-                <a id="exportLink" href="export.php" class="btn btn-success">Export to CSV</a>
             </div>
         </div>
     </form>
@@ -77,28 +78,13 @@
                               </tr>";
                     }
                 } else {
-                    echo "<tr><td colspan='9' class='text-center'>No records found</td></tr>";
+                    echo "<tr><td colspan='8' class='text-center'>No records found</td></tr>";
                 }
                 ?>
             </tbody>
         </table>
     </div>
 </div>
-
-<!-- JavaScript to update export link with filter parameters -->
-<script>
-    document.querySelector('form').addEventListener('submit', function (e) {
-        e.preventDefault(); // Prevent form submission to allow export link update
-        const startDate = document.getElementById('start_date').value;
-        const endDate = document.getElementById('end_date').value;
-        const exportLink = document.getElementById('exportLink');
-        
-        // Update the export link with the date range as query parameters
-        exportLink.href = `export.php?start_date=${startDate}&end_date=${endDate}`;
-        
-        this.submit(); // Submit form after updating export link
-    });
-</script>
 
 </body>
 </html>
