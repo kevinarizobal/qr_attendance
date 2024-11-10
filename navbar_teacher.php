@@ -59,7 +59,7 @@ $name = $_SESSION['full_name'];
                             QR Code Setting
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="qrCodeDropdown">
-                            <li><a class="dropdown-item" href="#qrCodeHistory">Class Attendance Record</a></li>
+                            <li><a class="dropdown-item" href="class_record.php">Class Attendance Record</a></li>
                             <li><a class="dropdown-item" href="qr_scan.php">QR Code Scan</a></li>
                         </ul>
                     </li>
