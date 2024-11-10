@@ -5,20 +5,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Account Profile Management</title>
-  <style>
-    .profile-image-preview {
-      width: 150px;
-      height: 150px;
-      border-radius: 50%;
-      object-fit: cover;
-    }
-  </style>
 </head>
 <body>
   <?php include 'navbar.php';?>
   <div class="container my-5">
     <h2 class="mb-4">Account Profile Management</h2>
-    <form action="profile_update.php" method="POST" enctype="multipart/form-data">
+    <form action="profile_update.php" method="POST">
         <div class="row">
             <div class="col-md-4">
                 <div class="mb-3">
@@ -55,13 +47,6 @@
             </div>
             <div class="col-md-6">
                 <div class="mb-3">
-                  <label for="image" class="form-label">Profile Image</label>
-                  <input type="file" class="form-control" id="image" name="image" accept="image/*" onchange="previewImage(event)">
-                  <img id="imagePreview" class="profile-image-preview mt-3" src="default-profile.png" alt="Profile Preview">
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="mb-3">
                     <label for="address" class="form-label">Address</label>
                     <textarea class="form-control" id="address" name="address" required></textarea>
                 </div>
@@ -70,16 +55,5 @@
       <button type="submit" class="btn btn-primary">Update Profile</button>
     </form>
   </div>
-
-  <script>
-    function previewImage(event) {
-      const reader = new FileReader();
-      reader.onload = function() {
-        const output = document.getElementById('imagePreview');
-        output.src = reader.result;
-      }
-      reader.readAsDataURL(event.target.files[0]);
-    }
-  </script>
 </body>
 </html>
