@@ -5,15 +5,16 @@ $db = 'qr_attendance';
 $user = 'root';
 $pass = '';
 
+// Get JSON input data
 $data = json_decode(file_get_contents("php://input"), true);
 $studentNumber = $data['studentNumber'];
 $room = $data['room'];
 $subject = $data['subject'];
 $instructor = $data['instructor'];
-$currentTime = date("h:i:s A"); // Current time in 12-hour format without date
-$currentDate = date("Y-m-d"); // Current date
+$currentTime = date("Y-m-d H:i:s"); // Current date and time in DATETIME format
 
 try {
+    // Database connection
     $pdo = new PDO("mysql:host=$host;dbname=$db", $user, $pass);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
@@ -23,30 +24,31 @@ try {
     $isRegistered = $stmt->fetchColumn();
 
     if (!$isRegistered) {
-        echo json_encode(["status" => "error", "message" => "Student is not registered."]);
+        echo json_encode(['status' => 'error', 'message' => 'Student not registered.']);
         exit;
     }
 
-    // Check if the student already has a timein record for today with room and subject
-    $stmt = $pdo->prepare("SELECT id, DATE_FORMAT(timein, '%h:%i:%s %p') AS timein, DATE_FORMAT(timeout, '%h:%i:%s %p') AS timeout FROM attendance WHERE std_no = ? AND logdate = ? AND room = ? AND subject = ?");
-    $stmt->execute([$studentNumber, $currentDate, $room, $subject]);
-    $record = $stmt->fetch(PDO::FETCH_ASSOC);
+    // Check if the student already has attendance for today in the selected room and subject
+    $stmt = $pdo->prepare("SELECT * FROM attendance WHERE std_no = ? AND logdate = CURDATE() AND room = ? AND subject = ?");
+    $stmt->execute([$studentNumber, $room, $subject]);
+    $attendanceRecord = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    if ($record) {
-        if (is_null($record['timeout'])) {
-            $stmt = $pdo->prepare("UPDATE attendance SET timeout = ? WHERE id = ?");
-            $stmt->execute([$currentTime, $record['id']]);
-            echo json_encode(["status" => "success", "message" => "Timeout recorded."]);
+    if ($attendanceRecord) {
+        // If attendance already exists, mark as 'out' and update the time out
+        if (!$attendanceRecord['timeout']) {
+            $stmt = $pdo->prepare("UPDATE attendance SET timeout = ?, status = 'Checked Out' WHERE id = ?");
+            $stmt->execute([$currentTime, $attendanceRecord['id']]);
+            echo json_encode(['status' => 'success', 'message' => 'Attendance marked as checked out.']);
         } else {
-            echo json_encode(["status" => "info", "message" => "Attendance already complete for today."]);
+            echo json_encode(['status' => 'error', 'message' => 'Attendance already recorded for today.']);
         }
     } else {
-        $stmt = $pdo->prepare("INSERT INTO attendance (std_no, timein, logdate, status, room, subject, instructor) VALUES (?, ?, ?, 'Present', ?, ?, ?)");
-        $stmt->execute([$studentNumber, $currentTime, $currentDate, $room, $subject, $instructor]);
-        echo json_encode(["status" => "success", "message" => "Timein recorded."]);
+        // If no attendance exists, insert new record
+        $stmt = $pdo->prepare("INSERT INTO attendance (std_no, timein, room, subject, instructor, logdate, status) VALUES (?, ?, ?, ?, ?, CURDATE(), 'Checked In')");
+        $stmt->execute([$studentNumber, $currentTime, $room, $subject, $instructor]);
+        echo json_encode(['status' => 'success', 'message' => 'Attendance marked as checked in.']);
     }
-
 } catch (PDOException $e) {
-    echo json_encode(["error" => $e->getMessage()]);
+    echo json_encode(['status' => 'error', 'message' => 'Database error: ' . $e->getMessage()]);
 }
 ?>
