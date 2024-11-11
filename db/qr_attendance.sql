@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Nov 07, 2024 at 06:58 AM
+-- Generation Time: Nov 11, 2024 at 01:46 AM
 -- Server version: 10.4.21-MariaDB
 -- PHP Version: 7.3.33
 
@@ -65,12 +65,7 @@ CREATE TABLE `attendance` (
 --
 
 INSERT INTO `attendance` (`id`, `std_no`, `timein`, `timeout`, `logdate`, `status`, `room`, `subject`, `instructor`) VALUES
-(1, 458655, '07:14:55', '2024-10-28 07:15:09', '2024-10-28', 'Present', 'Room A', 'Mathematics', 'Instructor A'),
-(2, 458655, '07:15:23', '2024-10-28 07:15:29', '2024-10-28', 'Present', 'Room B', 'Science', 'Instructor B'),
-(3, 458655, '07:22:59', '2024-10-28 07:23:07', '2024-10-28', 'Present', 'Room C', 'History', 'Instructor C'),
-(4, 458655, '00:59:15', '2024-10-29 00:59:43', '2024-10-29', 'Present', 'Room A', 'Mathematics', 'Instructor B'),
-(5, 458655, '01:53:19', '2024-10-29 01:53:29', '2024-10-29', 'Present', 'Room A', 'History', 'Instructor A'),
-(6, 458655, '05:56:43', '2024-10-29 05:56:51', '2024-10-29', 'Present', 'Room B', 'Mathematics', 'Instructor B');
+(1, 458655, '01:41:37', '2024-11-11 01:42:04', '2024-11-11', 'Checked Out', 'Room A1', 'History', 'Boss Kupal');
 
 -- --------------------------------------------------------
 
@@ -130,7 +125,6 @@ CREATE TABLE `user` (
 
 INSERT INTO `user` (`id`, `std_no`, `name`, `password`, `status`, `user_type`, `created`) VALUES
 (1, 458655, 'Kevin Arizobal', '202cb962ac59075b964b07152d234b70', 1, 1, '2024-10-28 05:20:30'),
-(2, 1234567, 'Ernesto Gonabo', '202cb962ac59075b964b07152d234b70', 1, 1, '2024-10-30 01:36:01'),
 (6, 246810, 'Boss Kupal', 'c4ca4238a0b923820dcc509a6f75849b', 1, 2, '2024-11-07 02:36:11');
 
 -- --------------------------------------------------------
@@ -146,17 +140,15 @@ CREATE TABLE `user_profile` (
   `year` int(11) DEFAULT NULL,
   `course` text DEFAULT NULL,
   `address` text DEFAULT NULL,
-  `email` text DEFAULT NULL,
-  `image` text DEFAULT NULL
+  `email` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `user_profile`
 --
 
-INSERT INTO `user_profile` (`id`, `std_no`, `gender`, `year`, `course`, `address`, `email`, `image`) VALUES
-(1, 458655, NULL, NULL, NULL, NULL, NULL, NULL),
-(2, 123, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `user_profile` (`id`, `std_no`, `gender`, `year`, `course`, `address`, `email`) VALUES
+(3, 458655, 'Male', 1, 'BSCpE', 'Cantilan Surigao del Sur', 'kevin.arizobal@yahoo.com');
 
 --
 -- Indexes for dumped tables
@@ -212,7 +204,7 @@ ALTER TABLE `admin`
 -- AUTO_INCREMENT for table `attendance`
 --
 ALTER TABLE `attendance`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `room`
@@ -236,7 +228,7 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `user_profile`
 --
 ALTER TABLE `user_profile`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
