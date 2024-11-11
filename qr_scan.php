@@ -34,14 +34,73 @@
     </style>
 </head>
 <body>
-<?php include ("navbar_teacher.php");?>
+<?php include ("navbar_teacher.php"); ?>
 
 <div class="container mt-5">
     <div class="content">
         <center><video id="interactive" class="mb-3"></video></center>
 
         <!-- Dropdowns for Room, Subject, and Instructor -->
-        <?php include 'fetch_options.php'; ?>
+        <?php
+        include 'connect.php';
+
+        // Fetch Rooms
+        $roomsQuery = "SELECT id, room_name FROM room";
+        $roomsResult = $conn->query($roomsQuery);
+
+        // Fetch Subjects
+        $subjectsQuery = "SELECT id, subject_name FROM subject";
+        $subjectsResult = $conn->query($subjectsQuery);
+
+        // Fetch Instructors (Assuming user_type = 2 is for instructors)
+        $instructorsQuery = "SELECT id, name FROM user WHERE user_type = 2";
+        $instructorsResult = $conn->query($instructorsQuery);
+        ?>
+
+        <!-- HTML for Room Select -->
+        <div class="mb-3">
+            <label for="roomSelect" class="form-label">Select Room</label>
+            <select id="roomSelect" class="form-select">
+                <option value="">Choose a room</option>
+                <?php
+                if ($roomsResult->num_rows > 0) {
+                    while ($row = $roomsResult->fetch_assoc()) {
+                        echo "<option value='" . $row['room_name'] . "'>" . $row['room_name'] . "</option>";
+                    }
+                }
+                ?>
+            </select>
+        </div>
+
+        <!-- HTML for Subject Select -->
+        <div class="mb-3">
+            <label for="subjectSelect" class="form-label">Select Subject</label>
+            <select id="subjectSelect" class="form-select">
+                <option value="">Choose a subject</option>
+                <?php
+                if ($subjectsResult->num_rows > 0) {
+                    while ($row = $subjectsResult->fetch_assoc()) {
+                        echo "<option value='" . $row['subject_name'] . "'>" . $row['subject_name'] . "</option>";
+                    }
+                }
+                ?>
+            </select>
+        </div>
+
+        <!-- HTML for Instructor Select -->
+        <div class="mb-3">
+            <label for="instructorSelect" class="form-label">Select Instructor</label>
+            <select id="instructorSelect" class="form-select">
+                <option value="">Choose an instructor</option>
+                <?php
+                if ($instructorsResult->num_rows > 0) {
+                    while ($row = $instructorsResult->fetch_assoc()) {
+                        echo "<option value='" . $row['name'] . "'>" . $row['name'] . "</option>";
+                    }
+                }
+                ?>
+            </select>
+        </div>
 
         <div id="result-container" class="alert alert-info" style="display:none;">
             <h4>Scanned Result:</h4>
@@ -78,6 +137,7 @@
     const scanner = new Instascan.Scanner({ video: document.getElementById('interactive') });
 
     scanner.addListener('scan', function (content) {
+        console.log(content); // Log the scanned content to verify it
         document.getElementById("result").innerText = content;
         document.querySelector("#result-container").style.display = '';
         recordAttendance(content);
@@ -156,11 +216,11 @@
                     $('#error-message').text(res.message);
                 } else {
                     $('#error-message').text('');
-                    fetchAttendanceRecords();
+                    fetchAttendanceRecords(); // Refresh attendance records
                 }
             },
-            error: function() {
-                $('#error-message').text('Failed to record attendance.');
+            error: function(xhr, status, error) {
+                $('#error-message').text('Failed to record attendance: ' + error);
             }
         });
     }
