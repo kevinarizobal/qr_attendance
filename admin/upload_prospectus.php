@@ -45,31 +45,6 @@ if (isset($_POST['submit'])) {
                 }
                 fclose($file);
             } 
-
-            // If Excel file
-            elseif ($fileExtension === 'xlsx') {
-                $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load($fileName);
-                $sheet = $spreadsheet->getActiveSheet();
-                $rows = $sheet->toArray();
-                array_shift($rows); // Skip header row
-
-                foreach ($rows as $row) {
-                    $course_code = $conn->real_escape_string($row[0]);
-                    $description = $conn->real_escape_string($row[1]);
-                    $semester = $conn->real_escape_string($row[2]);
-                    $year_level = $conn->real_escape_string($row[3]);
-                    $lecture_hours = $conn->real_escape_string($row[4]);
-                    $laboratory_hours = $conn->real_escape_string($row[5]);
-                    $units = $conn->real_escape_string($row[6]);
-                    $pre_requisite = $conn->real_escape_string($row[7]);
-
-                    $sql = "INSERT INTO tbl_prospectus (`course_code`, `description`, `semester`, `year_level`, `lecture_hours`, `laboratory_hours`, `units`, `pre_requisite`) 
-                            VALUES ('$course_code', '$description', '$semester', '$year_level', '$lecture_hours', '$laboratory_hours', '$units', '$pre_requisite')";
-
-                    $conn->query($sql);
-                }
-            }
-
             echo "<div class='alert alert-success'>Data successfully imported.</div>";
         } else {
             echo "<div class='alert alert-danger'>Invalid file format. Please upload a CSV or Excel file.</div>";
